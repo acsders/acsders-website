@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ACS DERS — Homepage (Supabase admin)</title>
+<meta name="description" content="Design preview of the ACS DERS official website.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Playfair+Display:wght@400;600;700;800&family=Lora:wght@400;500;600;700&family=Noto+Sans+Malayalam:wght@400;700&family=Manjari:wght@400;700&family=Noto+Serif+Malayalam:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#013265;--sky:#5c90ca;--link:#2b5f9e;--bg:#fff;--bg2:#f4f8fd;--ink:#0a2342;--mute:#4d6483;--line:#d9e5f3;
+--sans:"Montserrat","Noto Sans Malayalam","Noto Naskh Arabic",system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:130px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 var(--sans);overflow-x:hidden}
+h1,h2,h3{font-family:var(--sans);font-weight:800;line-height:1.18;margin:0 0 .5em;color:var(--navy);letter-spacing:-.01em}
+h2{font-size:clamp(1.8rem,3.4vw,2.5rem)}h3{font-size:1.1rem;font-weight:700}p{margin:0 0 1em}
+a{color:inherit}.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:90px 0}.alt{background:var(--bg2)}
+.ph{display:inline-block;font-size:.74rem;background:#5c90ca33;padding:2px 12px;border-radius:99px;margin-bottom:12px}
+.eyebrow{display:flex;align-items:center;gap:12px;color:var(--link);font-weight:700;font-size:.85rem;margin-bottom:12px}
+.eyebrow::before{content:"";width:40px;height:2px;background:var(--sky)}
+.center{text-align:center}.center .eyebrow{justify-content:center}.center .eyebrow::before{display:none}
+.bar-u{width:90px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--navy),var(--sky));margin:14px auto 40px}
+/* header */
+header{position:fixed;top:0;inset-inline:0;z-index:50;padding:14px 20px;padding-top:calc(14px + env(safe-area-inset-top,0px));pointer-events:none;transition:transform .35s ease,opacity .35s ease}
+header.hide{transform:translateY(-130%);opacity:0}
+header.hide .cap{pointer-events:none}
+body.ed header.hide{transform:none;opacity:1}
+.cap{pointer-events:auto;max-width:1260px;margin:0 auto;background:#ffffffee;backdrop-filter:blur(12px);border-radius:999px;box-shadow:0 12px 40px #01326524;display:flex;align-items:center;gap:10px;height:68px;padding:0 10px 0 18px;transition:box-shadow .3s}
+header.solid .cap{box-shadow:0 14px 44px #01326536}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
+.logo i{width:40px;height:46px;border-radius:999px 999px 10px 10px;border:2px solid var(--navy);display:grid;place-items:center;font:700 .52rem var(--sans);font-style:normal;color:var(--navy)}
+.logo span{display:flex;flex-direction:column;line-height:1.15;font-weight:800;color:var(--navy);font-size:1.02rem}.logo small{font-size:.62rem;font-weight:500;color:var(--mute)}
+nav{display:flex;align-items:center;justify-content:center;flex:1}
+nav>a,.dd>button{font:inherit;font-weight:600;font-size:.86rem;padding:9px 12px;text-decoration:none;color:var(--ink);background:none;border:0;cursor:pointer;border-radius:99px;transition:background .2s}
+nav>a:hover,.dd>button:hover{background:var(--bg2)}
+.dd>button::after{content:"\25BE";margin-inline-start:5px;font-size:.7rem;color:var(--sky)}
+.dd{position:relative}
+.dm{position:absolute;top:calc(100% + 6px);inset-inline-start:0;min-width:250px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:8px;box-shadow:0 22px 50px #01326524;opacity:0;visibility:hidden;transform:translateY(8px);transition:.2s}
+.dd:hover .dm,.dd:focus-within .dm,.dd.open .dm{opacity:1;visibility:visible;transform:none}
+.dm a{display:block;padding:10px 16px;border-radius:16px;text-decoration:none;font-size:.86rem;font-weight:500}.dm a:hover{background:var(--bg2);color:var(--navy)}
+.tr{display:flex;align-items:center;gap:8px;flex:none}
+.tr select{background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:99px;padding:8px 12px;font:inherit;font-size:.82rem;cursor:pointer}
+.tr .ad{background:var(--navy);color:#fff;font-weight:700;font-size:.84rem;padding:11px 20px;border-radius:99px;text-decoration:none;transition:background .2s}.tr .ad:hover{background:var(--link)}
+#burger{display:none;background:#fff;border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-size:1rem;cursor:pointer}
+@media(max-width:1120px){#burger{display:block}.tr .ad{display:none}.tr{margin-inline-start:auto}
+nav{position:fixed;inset:calc(96px + env(safe-area-inset-top,0px)) 16px auto 16px;background:#fff;border-radius:28px;box-shadow:0 22px 50px #01326530;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:10px 20px 18px;max-height:calc(100vh - 120px);overflow:auto;transform:translateY(-140%);transition:transform .3s;flex:none}
+nav.open{transform:none}nav>a,.dd>button{width:100%;text-align:start;padding:14px 4px;border-radius:0;border-bottom:1px solid var(--line)}
+.dm{position:static;display:none;opacity:1;visibility:visible;transform:none;box-shadow:none;border:0;padding:0 0 6px 12px}.dd.open .dm{display:block}}
+/* hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:130px 0 110px;color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.kb{position:absolute;inset:0;background:linear-gradient(120deg,#01162f,var(--navy) 55%,#2f6199);animation:kb 24s ease-in-out infinite alternate}
+.kb video{width:100%;height:100%;object-fit:cover}
+@keyframes kb{to{transform:scale(1.08)}}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#011a38e0,#01326540 75%)}
+.arc{position:absolute;z-index:2;inset-inline-end:7%;bottom:0;width:min(34vw,440px);aspect-ratio:3/4;border:2px solid #ffffff38;border-bottom:0;border-radius:999px 999px 0 0}
+.arc::after{content:"";position:absolute;inset:26px 26px 0;border:2px solid #ffffff22;border-bottom:0;border-radius:999px 999px 0 0}
+.hero .wrap{position:relative;z-index:3;width:100%}
+.hero .eyebrow{color:#fff}.hero .eyebrow::before{background:var(--sky)}
+.hero h1{font-size:clamp(2.7rem,6.4vw,5.2rem);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-.02em;max-width:12ch}
+.hero h1 span{display:block;opacity:0;transform:translateY(30px);animation:up .8s cubic-bezier(.2,.8,.2,1) forwards}
+.hero h1 span:nth-child(2){animation-delay:.12s}.hero h1 span:nth-child(3){animation-delay:.24s}
+.lead{max-width:46ch;color:#e3edf9;font-size:1.15rem;margin:0;opacity:0;animation:up .8s .4s forwards}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:32px;opacity:0;animation:up .8s .55s forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.scroll{position:absolute;z-index:3;bottom:28px;left:50%;margin-left:-14px;width:28px;height:46px;border:2px solid #ffffff90;border-radius:99px}
+.scroll i{position:absolute;left:50%;top:9px;width:4px;height:9px;margin-left:-2px;border-radius:4px;background:#fff;animation:sd 1.8s infinite}
+@keyframes sd{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+.btn{display:inline-block;padding:14px 30px;border-radius:99px;text-decoration:none;font-weight:700;font-size:.9rem;transition:transform .2s,background .25s,box-shadow .25s}
+.btn:hover{transform:translateY(-2px)}
+.b1{background:var(--navy);color:#fff}.b1:hover{box-shadow:0 10px 26px #01326545}
+.b2{border:1.5px solid var(--navy);color:var(--navy)}.b2:hover{background:#5c90ca26}
+.hero .b1{background:#fff;color:var(--navy)}.hero .b2{border-color:#fff;color:#fff}.hero .b2:hover{background:#ffffff26}
+.chip{display:inline-block;background:#5c90ca30;color:var(--navy);font-size:.7rem;font-weight:700;padding:2px 10px;border-radius:99px;margin-bottom:6px}
+body.ed .hero .wrap{pointer-events:none}body.ed .hero .wrap>*{pointer-events:auto}
+body.ed .hero-bg,body.ed .hero-bg::after{pointer-events:none}body.ed .kb{pointer-events:auto;outline:2px dashed #ffd37a;outline-offset:-8px;cursor:pointer}
+/* content */
+.grid{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+@media(max-width:860px){.two{grid-template-columns:1fr;gap:40px}section{padding:64px 0}}
+.photo{aspect-ratio:4/5;border-radius:32px;background:linear-gradient(145deg,var(--navy),var(--sky));display:grid;place-items:center;color:#ffffffd9;font-size:.9rem;text-align:center;padding:20px}
+.photo.wide{aspect-ratio:4/3}
+.dphoto{position:relative;max-width:420px;width:100%}
+.dphoto::before{content:"";position:absolute;inset:24px -24px -24px 24px;border-radius:32px;background:var(--sky);opacity:.5}
+.dphoto .photo{position:relative;box-shadow:0 24px 50px #01326530}
+blockquote{margin:0 0 26px;padding-inline-start:22px;border-inline-start:4px solid var(--sky);font:500 1.12rem/1.8 var(--sans);color:var(--mute)}
+.doc{display:flex;align-items:center;gap:18px;background:var(--bg2);border:1px solid var(--line);border-radius:26px;padding:18px 22px;text-decoration:none;transition:transform .25s,box-shadow .25s;max-width:560px}
+.doc:hover{transform:translateY(-3px);box-shadow:0 14px 30px #01326518}
+.doc b{width:60px;height:60px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;flex:none;font-size:1.1rem}
+.doc small{display:block;color:var(--link);font-weight:700;font-size:.78rem}.doc strong{display:block;color:var(--ink);font-size:1rem}.doc em{display:block;font-style:normal;color:var(--mute);font-size:.82rem;line-height:1.5}.doc i{margin-inline-start:auto;color:var(--mute);font-style:normal}
+.who{margin-top:22px}.who strong{display:block;font-size:1.1rem;color:var(--ink)}.who span{color:var(--link);font-weight:600;font-size:.92rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:28px;padding:28px;transition:box-shadow .3s,transform .25s}
+.card:hover{box-shadow:0 18px 40px #01326518;transform:translateY(-4px)}
+.card .ic{width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;margin-bottom:16px;font-size:1.2rem}
+.card p{color:var(--mute);margin:0;font-size:.95rem}
+.sec-h{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:36px;flex-wrap:wrap}.sec-h h2{margin:0}
+.sec-h a{color:var(--link);font-weight:700;text-decoration:none;font-size:.9rem}.sec-h a:hover{text-decoration:underline}
+.nc{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px #01326514;transition:transform .3s,box-shadow .3s;display:block;text-decoration:none}
+.nc:hover{transform:translateY(-6px);box-shadow:0 22px 48px #01326524}
+.nimg{aspect-ratio:16/10;background:linear-gradient(135deg,var(--sky),var(--navy));display:grid;place-items:center;color:#ffffffcc;font-size:.82rem}
+.nb{padding:22px 24px 26px}.nb h3{color:var(--ink);margin:6px 0 0}.nb small{color:var(--mute)}
+.more{text-align:center;margin-top:40px}
+.rcard{margin:0}.rph{aspect-ratio:4/5;border-radius:28px;background:linear-gradient(160deg,var(--sky),var(--navy));display:grid;place-items:center;text-align:center;padding:16px;color:#fff;font-size:.85rem;transition:transform .35s}.rcard:hover .rph{transform:translateY(-4px)}
+.rcard figcaption{padding:12px 6px 0;display:grid}.rcard figcaption b{color:var(--navy)}.rcard figcaption span{color:var(--mute);font-size:.88rem}
+.avatar{width:92px;height:92px;border-radius:50%;background:linear-gradient(145deg,var(--navy),var(--sky));margin-bottom:14px;display:grid;place-items:center;color:#fff;font-size:.7rem}
+.media{display:grid;gap:14px;grid-template-columns:repeat(4,1fr)}
+.media div{aspect-ratio:1;border-radius:28px;background:linear-gradient(160deg,var(--sky),var(--navy));display:grid;place-items:center;color:#fff;font-size:.8rem;transition:transform .35s}
+.media div:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:auto}.media div:hover{transform:scale(1.03)}
+@media(max-width:640px){.media{grid-template-columns:repeat(2,1fr)}}
+.band{background:var(--bg2);border-block:1px solid var(--line);text-align:center}
+.band p{color:var(--mute);max-width:56ch;margin:0 auto 26px}
+footer{background:var(--bg2);border-top:1px solid var(--line);padding:64px 0 28px;font-size:.92rem;color:var(--mute)}
+footer .grid{grid-template-columns:2fr 1fr 1fr 1.2fr}
+@media(max-width:760px){footer .grid{grid-template-columns:1fr 1fr}}
+footer h4{color:var(--navy);margin:0 0 12px;font-size:1rem;font-weight:800}
+footer a{display:block;text-decoration:none;padding:3px 0}footer a:hover{color:var(--navy)}
+.copy{border-top:1px solid var(--line);margin-top:36px;padding-top:18px;font-size:.82rem}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s,transform .6s cubic-bezier(.2,.8,.2,1)}.rv.in{opacity:1;transform:none}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.rv,.hero h1 span,.cta,.lead{opacity:1;transform:none}}
+.dphoto::before{display:none}.dphoto{max-width:400px}.dphoto .photo{aspect-ratio:3/4;border-radius:999px 999px 32px 32px}
+.nlay{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:1fr 1fr;gap:24px}
+.nlay .big{grid-row:span 2;display:flex;flex-direction:column}.nlay .big .nimg{aspect-ratio:auto;flex:1;min-height:260px}
+.nlay .sm{display:grid;grid-template-columns:150px 1fr;align-items:stretch}.nlay .sm .nimg{aspect-ratio:auto;height:100%}.nlay .sm .nb{align-self:center;padding:18px 22px}
+@media(max-width:860px){.nlay{grid-template-columns:1fr;grid-template-rows:none}.nlay .big{grid-row:auto}.nlay .sm{grid-template-columns:120px 1fr}}
+.pc{display:flex;flex-direction:column}.pc .ai{width:56px;height:64px;border-radius:999px 999px 12px 12px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:1.4rem;margin-bottom:16px}
+.pc .btn{align-self:flex-start;margin-top:20px;padding:10px 24px}
+#ab,#ip,#gear{position:fixed;z-index:999;font:600 .78rem var(--sans);color:#0a2342}
+#ab{inset-inline:0;bottom:0;background:#0a2342;color:#fff;display:none;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}
+#ab b{letter-spacing:.08em;color:#9cc2f0}#am{color:#ffd37a;margin-inline-start:auto}
+#ab button,#ab select,#ip button,#ip input,#gear{font:inherit;border-radius:10px;border:1px solid #5c90ca;padding:7px 12px;background:#fff;color:#0a2342;cursor:pointer}
+#ab .pr{background:#5c90ca;color:#fff}
+#gear{display:none;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));border-radius:99px;background:#013265;color:#fff;box-shadow:0 8px 24px #0004}
+#ip{display:none;right:12px;bottom:84px;width:min(380px,calc(100vw - 24px));background:#fff;border:1px solid #5c90ca;border-radius:18px;padding:12px;gap:6px;flex-wrap:wrap;box-shadow:0 18px 44px #01326540}
+#ip input{flex:1 0 100%;cursor:text}#is{flex:1 0 100%;color:#4d6483}
+body.ed #ab{display:flex}body.ed #ip.on{display:flex}body.ed #gear{display:none!important}body.ed{padding-bottom:130px}
+body.ed [contenteditable]{outline:1px dashed #5c90ca99;outline-offset:2px;cursor:text}
+body.ed .sel{outline:3px solid #e8a317!important;outline-offset:3px}
+body.ed .rv,body.ed .hero h1 span,body.ed .cta,body.ed .lead{opacity:1!important;transform:none!important;animation:none!important}
+@media(max-width:700px){#ip{bottom:140px}}
+.enq{max-width:520px;margin:34px auto 0;display:grid;gap:10px;text-align:start}
+.enq input,.enq textarea{font:inherit;padding:13px 16px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);width:100%}
+.enq textarea{min-height:90px;resize:vertical}.enq .hp{position:absolute;left:-9999px}
+.enq button{border:0;cursor:pointer;font:inherit;font-weight:700;justify-self:start}.enq .em{color:var(--link);font-weight:600}
+#lg{position:fixed;inset:0;z-index:1000;background:#0a234299;display:grid;place-items:center;padding:16px;font:500 .9rem var(--sans);color:#0a2342}
+#lg form,.eqb{background:#fff;border-radius:20px;padding:22px;width:min(420px,100%);display:grid;gap:10px;max-height:90vh;overflow:auto}.eqb{width:min(720px,100%)}
+#lg input{font:inherit;padding:11px 14px;border:1px solid #d9e5f3;border-radius:12px}#lg button{font:inherit;font-weight:600;padding:10px 16px;border-radius:12px;border:1px solid #5c90ca;background:#fff;cursor:pointer}#lg .pr{background:#013265;color:#fff}
+#lg h3{margin:0}.eql p{margin:0;padding:8px 0;border-bottom:1px solid #d9e5f3;font-size:.82rem}
+
+/* memorial section */
+.mem{background:linear-gradient(160deg,#01162f,var(--navy) 60%,#1e4f8a);color:#e3edf9}
+.mem h2,.mem h3{color:#fff}.mem .mh{font-size:1.5rem}.mem .eyebrow{color:#9cc2f0}.mem p{color:#d3e2f5}
+.mem .ph{background:#ffffff26;color:#fff}.mem .bar-u{background:linear-gradient(90deg,#fff,var(--sky))}
+.mem blockquote{color:#e3edf9;border-color:var(--sky)}
+.mem .dua{font:700 1.6rem/1.6 "Noto Naskh Arabic","Amiri",serif;color:#fff;margin:0 0 12px}
+.mframe{margin:0;width:100%;max-width:400px;justify-self:center;padding:16px 16px 20px;background:#fff;border-radius:34px;box-shadow:0 0 0 2px var(--sky),0 0 0 12px #ffffff1c,0 34px 70px #0007}
+.mframe .photo{aspect-ratio:4/5;border-radius:22px}
+.mframe figcaption{text-align:center;padding-top:16px;display:grid}.mframe figcaption b{color:var(--navy);font-size:1.1rem}.mframe figcaption span{color:var(--mute);font-size:.88rem}
+/* admin: text style + logo */
+#ip{max-height:70vh;overflow:auto}
+#ip select{font:inherit;border-radius:10px;border:1px solid #5c90ca;padding:7px 12px;background:#fff;color:#0a2342;cursor:pointer}
+#ft,#mvp{flex:1 0 100%;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px solid #d9e5f3;padding-top:8px;margin-top:2px}
+#ft label,#mvp label{flex:1 0 100%;color:#4d6483;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase}
+#ip #ff{flex:1 0 100%}#ip #fw{flex:1 1 100px}#ip #fs{flex:0 0 64px;width:64px;text-align:center}
+#ip #fc{flex:0 0 42px;width:42px;height:34px;padding:2px;border-radius:10px}
+body.mv header,body.mv main,body.mv footer{touch-action:none;user-select:none;-webkit-user-select:none}
+body.mv header *,body.mv main *,body.mv footer *{cursor:move!important}
+body.mv .sel{outline-color:#2bd37a!important}
+#ab button.on{background:#2bd37a;border-color:#2bd37a;color:#02261a}
+#ip button.on{background:#013265;color:#fff}
+body.ed .ai,body.ed .logo i{outline:2px dashed #ffd37a;outline-offset:3px;cursor:pointer}
+</style>
+</head>
+<body>
+<header id="hd"><div class="cap">
+<a class="logo" href="#top"><i>LOGO</i><span>ACS DERS<small>Al-Huda · Kalanthode</small></span></a>
+<nav id="nav">
+<a href="#top" data-t="home">Home</a>
+<div class="dd"><button><span data-t="about">About</span></button><div class="dm"><a href="#about">About ACS DERS</a><a href="#director">Director's message</a><a href="#staff">Staff and administration</a></div></div>
+<div class="dd"><button><span data-t="acad">Academics</span></button><div class="dm"><a href="#results">Results and achievements</a><a href="#facilities">Academic life and facilities</a><a href="#admission">Admission</a></div></div>
+<div class="dd"><button><span data-t="news">News</span></button><div class="dm"><a href="#news">News and blog</a><a href="#events">Events and activities</a><a href="#memories">ACS Beeran Musliyar</a></div></div>
+<div class="dd"><button><span data-t="media">Media</span></button><div class="dm"><a href="#media">Downloads and media centre</a><a href="#admission">Brochure</a></div></div>
+<div class="dd"><button><span data-t="apps">Our apps</span></button><div class="dm"><a href="#portals">ACS DERS Connect</a><a href="#portals">ACS DERS Parents App</a><a href="#portals">All apps</a></div></div>
+<a href="#contact" data-t="contact">Contact</a>
+</nav>
+<div class="tr"><select id="lang" aria-label="Language"><option value="en">English</option><option value="ml">മലയാളം</option><option value="ar">العربية</option></select><a class="ad" href="#admission" data-t="adm">Admission enquiry</a></div>
+<button id="burger" aria-label="Menu">☰</button>
+</div></header>
+
+<main id="top">
+<div class="hero"><div class="hero-bg"><div class="kb"><video autoplay muted loop playsinline preload="auto"></video></div></div>
+<div class="wrap">
+<div class="eyebrow">Al-Huda ACS DERS, Kalanthode, Calicut, Kerala</div>
+<h1 id="h1"><span>A place to learn,</span><span>grow and</span><span>serve.</span></h1>
+<p class="lead" data-t="intro">Islamic education in Kalanthode, Calicut.</p>
+<div class="cta"><a class="btn b1" href="#about" data-t="aboutus">About us</a><a class="btn b2" href="#admission" data-t="adm">Admission enquiry</a></div>
+</div>
+<div class="scroll"><i></i></div></div>
+
+<section id="about"><div class="wrap two">
+<div class="rv"><span class="ph">Placeholder text — send verified content</span>
+<div class="eyebrow">Who we are</div><h2>About ACS DERS</h2>
+<p>A short, honest introduction to the institution will appear here: who it serves, what it teaches and the values behind it. The admin edits this text in English, Malayalam and Arabic.</p>
+<a class="btn b1" href="#">Read more</a></div>
+<div class="photo wide rv">Campus photograph<br>(placeholder)</div>
+</div></section>
+
+<section id="portals" class="alt"><div class="wrap">
+<div class="center"><div class="eyebrow">ACS DERS apps</div><h2>Our digital services</h2><div class="bar-u"></div><span class="ph">Links are placeholders. The admin sets the real web addresses.</span></div>
+<div class="grid">
+<div class="card pc rv"><div class="ai">🎓</div><h3>ACS DERS Connect</h3><p>Campus management system (description to be confirmed).</p><a class="btn b1" href="#" target="_blank" rel="noopener">Open</a></div>
+<div class="card pc rv"><div class="ai">👨‍👩‍👧</div><h3>ACS DERS Parents App</h3><p>App for parents (description to be confirmed).</p><a class="btn b1" href="#" target="_blank" rel="noopener">Open</a></div>
+<div class="card pc rv"><div class="ai">＋</div><h3>Another service</h3><p>More apps and websites can be added here from the admin panel.</p><a class="btn b2" href="#" target="_blank" rel="noopener">Open</a></div>
+</div></div></section>
+
+<section id="memories" class="mem"><div class="wrap">
+<div class="center rv"><div class="eyebrow">In loving memory</div><h2>ACS Beeran Musliyar</h2><div class="bar-u"></div></div>
+<div class="two">
+<figure class="mframe rv"><div class="photo">Photograph<br>(upload from admin)</div><figcaption><b>ACS Beeran Musliyar</b><span>Years (placeholder)</span></figcaption></figure>
+<div class="rv"><span class="ph">Placeholder — send verified description</span>
+<p class="dua" lang="ar">اللهم اغفر له وارحمه</p>
+<h3 class="mh">Remembering a life of service</h3>
+<p>A short description in memory of ACS Beeran Musliyar will appear here: his life, his contribution to the institution and the values he is remembered for. The admin edits this text in English, Malayalam and Arabic.</p>
+<blockquote>A line of remembrance, or a dua from the family, will appear here.</blockquote></div>
+</div></div></section>
+
+<section id="director"><div class="wrap two">
+<div class="dphoto rv"><div class="photo">Director's photograph<br>(placeholder)</div></div>
+<div class="rv"><span class="ph">Placeholder — message to be supplied</span>
+<div class="eyebrow">Visionary leadership</div><h2>Director's message</h2>
+<blockquote>The director's welcome message will appear here, in the director's own words.</blockquote>
+<a class="doc" href="https://www.youtube.com/" target="_blank" rel="noopener"><b>▶</b><span><small data-t="watch">Watch documentary</small><strong>Documentary title (placeholder)</strong><em>A short line about the documentary.</em></span><i>↗</i></a>
+<div class="who"><strong>Director's name</strong><span>Director</span></div></div>
+</div></section>
+
+<section id="news" class="alt"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">Stay updated</div><h2>News and updates</h2></div><a href="#">View more news</a></div>
+<div class="nlay">
+<a class="nc big rv" href="#"><div class="nimg">News photo</div><div class="nb"><span class="chip">Category</span><h3>Main news headline (placeholder)</h3><small>Date</small></div></a>
+<a class="nc sm rv" href="#"><div class="nimg">Photo</div><div class="nb"><span class="chip">Category</span><h3>News headline (placeholder)</h3><small>Date</small></div></a>
+<a class="nc sm rv" href="#"><div class="nimg">Photo</div><div class="nb"><span class="chip">Category</span><h3>News headline (placeholder)</h3><small>Date</small></div></a>
+</div></div></section>
+
+<section id="results"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">Our pride</div><h2>Results and achievements</h2><span class="ph">Photos are placeholders. The admin uploads the real ones.</span></div><a href="#">All results</a></div>
+<div class="grid">
+<figure class="rcard rv"><div class="rph">Result photo<br>(upload)</div><figcaption><b>Title (placeholder)</b><span>Year</span></figcaption></figure>
+<figure class="rcard rv"><div class="rph">Result photo<br>(upload)</div><figcaption><b>Title (placeholder)</b><span>Year</span></figcaption></figure>
+<figure class="rcard rv"><div class="rph">Result photo<br>(upload)</div><figcaption><b>Title (placeholder)</b><span>Year</span></figcaption></figure>
+<figure class="rcard rv"><div class="rph">Result photo<br>(upload)</div><figcaption><b>Title (placeholder)</b><span>Year</span></figcaption></figure>
+</div></div></section>
+
+<section id="facilities" class="alt"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">Campus life</div><h2>Academic life and facilities</h2></div><a href="#">See all</a></div>
+<div class="grid">
+<div class="card rv"><div class="ic">📚</div><h3>Learning spaces</h3><p>Describe classrooms and library here.</p></div>
+<div class="card rv"><div class="ic">🕌</div><h3>Prayer and worship</h3><p>Describe the masjid and routine here.</p></div>
+<div class="card rv"><div class="ic">🏠</div><h3>Hostel and daily life</h3><p>Describe student residence here.</p></div>
+<div class="card rv"><div class="ic">⚽</div><h3>Sports and activities</h3><p>Describe grounds and clubs here.</p></div>
+</div></div></section>
+
+<section id="staff"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">Our team</div><h2>Staff and administration</h2></div><a href="#">Meet the team</a></div>
+<div class="grid">
+<div class="card rv"><div class="avatar">Photo</div><h3>Staff name</h3><p>Role (placeholder)</p></div>
+<div class="card rv"><div class="avatar">Photo</div><h3>Staff name</h3><p>Role (placeholder)</p></div>
+<div class="card rv"><div class="avatar">Photo</div><h3>Staff name</h3><p>Role (placeholder)</p></div>
+</div></div></section>
+
+<section id="events" class="alt"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">What's happening</div><h2>Latest events</h2></div><a href="#">All events</a></div>
+<div class="grid">
+<a class="nc rv" href="#"><div class="nimg">Event photo</div><div class="nb"><span class="chip">Date</span><h3>Event title (placeholder)</h3></div></a>
+<a class="nc rv" href="#"><div class="nimg">Event photo</div><div class="nb"><span class="chip">Date</span><h3>Event title (placeholder)</h3></div></a>
+<a class="nc rv" href="#"><div class="nimg">Event photo</div><div class="nb"><span class="chip">Date</span><h3>Event title (placeholder)</h3></div></a>
+</div></div></section>
+
+<section id="media"><div class="wrap">
+<div class="sec-h"><div><div class="eyebrow">Gallery</div><h2>Photos and videos</h2></div><a href="#">Open the media centre</a></div>
+<div class="media rv"><div>Featured photo</div><div>Photo</div><div>Photo</div><div>Video</div><div>Photo</div></div>
+</div></section>
+
+<section id="admission" class="band"><div class="wrap rv">
+<h2>Admission</h2>
+<p>Send an enquiry and the office will contact you. Admission details will be added once confirmed.</p>
+<a class="btn b1" href="#contact" data-t="adm">Admission enquiry</a>
+<a class="btn b2" href="#" style="margin-inline-start:10px">Download brochure</a>
+<div class="enq"><input name="n" placeholder="Parent / guardian name"><input name="p" placeholder="Phone number" inputmode="tel"><input name="s" placeholder="Student name and class (optional)"><textarea name="m" placeholder="Message"></textarea><input name="h" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true"><button class="btn b1" type="button">Send enquiry</button><small class="em"></small></div>
+</div></section>
+
+<section id="contact"><div class="wrap two">
+<div class="rv"><div class="eyebrow">Get in touch</div><h2>Contact us</h2><p>Al-Huda ACS DERS, Kalanthode, Calicut, Kerala, India.</p><p>Phone, email and map: <span class="ph">to be supplied</span></p></div>
+<div class="card rv"><h3>Find us</h3><p>Map and social media links appear here.</p></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+<div class="grid">
+<div><h4>ACS DERS</h4><p>Al-Huda ACS DERS, Kalanthode, Calicut, Kerala.</p></div>
+<div><h4>Explore</h4><a href="#about">About</a><a href="#results">Results</a><a href="#facilities">Facilities</a><a href="#staff">Staff</a></div>
+<div><h4>Resources</h4><a href="#events">Events</a><a href="#news">News</a><a href="#media">Downloads</a><a href="#admission">Admission</a></div>
+<div><h4>Our apps</h4><a href="#portals">ACS DERS Connect</a><a href="#portals">ACS DERS Parents App</a><h4 style="margin-top:14px">Follow</h4><a href="#">Facebook</a><a href="#">Instagram</a><a href="#">YouTube</a></div>
+</div>
+<div class="copy">© ACS DERS. Design preview with placeholder content. Privacy notice and terms will be linked here.</div>
+</div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+var d=document,root=d.documentElement,hd=d.getElementById("hd"),nav=d.getElementById("nav");
+var lastY=scrollY;
+function sc(){var y=scrollY;hd.classList.toggle("solid",y>40);
+if(d.body.classList.contains("ed")||nav.classList.contains("open")||y<80){hd.classList.remove("hide")}
+else if(y>lastY+4){hd.classList.add("hide")}
+else if(y<lastY-4){hd.classList.remove("hide")}
+lastY=y}addEventListener("scroll",sc,{passive:true});sc();
+d.getElementById("burger").onclick=function(){nav.classList.toggle("open")};
+nav.querySelectorAll(".dd>button").forEach(function(b){b.onclick=function(e){e.stopPropagation();var p=b.parentNode,o=p.classList.contains("open");nav.querySelectorAll(".dd").forEach(function(x){x.classList.remove("open")});if(!o)p.classList.add("open")}});
+d.addEventListener("click",function(){nav.querySelectorAll(".dd").forEach(function(x){x.classList.remove("open")})});
+nav.addEventListener("click",function(e){if(e.target.tagName=="A")nav.classList.remove("open")});
+/* draft translations for the main labels: the admin will review them */
+var T={en:{home:"Home",apps:"Our apps",intro:"Islamic education in Kalanthode, Calicut.",about:"About",acad:"Academics",news:"News",media:"Media",contact:"Contact",adm:"Admission enquiry",aboutus:"About us",upd:"News and updates",allann:"View all announcements",watch:"Watch documentary",h:["A place to learn,","grow and","serve."]},
+ml:{home:"ഹോം",apps:"ആപ്പുകൾ",intro:"കാളന്തോട്, കാലിക്കറ്റിലെ ഇസ്ലാമിക വിദ്യാഭ്യാസം.",about:"ഞങ്ങളെക്കുറിച്ച്",acad:"അക്കാദമിക്സ്",news:"വാർത്തകൾ",media:"മീഡിയ",contact:"ബന്ധപ്പെടുക",adm:"പ്രവേശന അന്വേഷണം",aboutus:"ഞങ്ങളെക്കുറിച്ച്",upd:"വാർത്തകളും അറിയിപ്പുകളും",allann:"എല്ലാ അറിയിപ്പുകളും കാണുക",watch:"ഡോക്യുമെന്ററി കാണുക",h:["പഠിക്കാനും,","വളരാനും,","സേവിക്കാനും ഒരിടം."]},
+ar:{home:"الرئيسية",apps:"تطبيقاتنا",intro:"تعليم إسلامي في كالانتود، كاليكوت.",about:"من نحن",acad:"الأكاديميات",news:"الأخبار",media:"الوسائط",contact:"اتصل بنا",adm:"استفسار القبول",aboutus:"من نحن",upd:"الأخبار والتحديثات",allann:"عرض كل الإعلانات",watch:"شاهد الفيلم الوثائقي",h:["مكان للتعلّم","والنموّ","والخدمة."]}};
+d.getElementById("lang").onchange=function(){var l=this.value,t=T[l];root.lang=l;root.dir=l=="ar"?"rtl":"ltr";
+d.querySelectorAll("[data-t]").forEach(function(n){n.textContent=t[n.dataset.t]});
+d.querySelectorAll("#h1 span").forEach(function(s,k){s.textContent=t.h[k]})};
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.12});
+d.querySelectorAll(".rv").forEach(function(n,k){n.style.transitionDelay=(k%3)*70+"ms";io.observe(n)});
+})();
+</script>
+<script>
+(function(){
+var d=document,B=d.body,Q=function(s,r){return(r||d).querySelector(s)},A=function(s,r){return[].slice.call((r||d).querySelectorAll(s))};
+var R=[["nav","#nav"],["main","main"],["foot","footer"],["logo",".logo"]],O={},lang=Q("#lang"),oc=lang.onchange,cur="en",sb,as,dirty=0,ed=0,mv=0,mx=0,dr=null,sel,tgt;
+var IT=".card,.nc,.mframe,.rcard,.doc,.media>div,.dm>a,nav>a,.dd,footer .grid>div,footer a,.btn,.ph,.chip,section",SL=".photo,.nimg,.rph,.avatar,.media>div,.logo i,.kb,.ai";var LG=".ai,.logo i";
+R.forEach(function(r){O[r[0]]=Q(r[1]).innerHTML});
+/* keep dropdowns working after content is swapped */
+A(".dd>button").forEach(function(b){b.onclick=null});
+Q("#nav").addEventListener("click",function(e){var b=e.target.closest(".dd>button");if(!b)return;e.stopPropagation();var p=b.parentNode,o=p.classList.contains("open");A(".dd").forEach(function(x){x.classList.remove("open")});if(!o)p.classList.add("open")});
+/* admin UI */
+var ab=d.createElement("div");ab.id="ab";ab.innerHTML='<b>ADMIN</b><select id="al"><option value="en">English</option><option value="ml">മലയാളം</option><option value="ar">العربية</option></select><button class="pr" data-a="save">Save</button><button data-a="mv" id="mvb">✥ Move: off</button><button data-a="hero">Hero background</button><button data-a="reset">Reset language</button><button data-a="enq">Enquiries</button><button data-a="out">Sign out</button><button data-a="exit">Exit</button><span id="am">Click any text to edit, then choose font, size, weight and colour in the panel. Click a card, button, logo or image to manage it.</span>';
+var ip=d.createElement("div");ip.id="ip";ip.innerHTML='<span id="is"></span><button data-a="up">⬆ Parent</button><button data-a="dup">＋ Duplicate</button><button data-a="del">✕ Delete</button><button data-a="l" title="Earlier in order">◀</button><button data-a="r" title="Later in order">▶</button><input id="ih" placeholder="Link URL (https://…)"><button data-a="file">Upload file for link</button><button data-a="img">Change image / video</button><button data-a="rimg">Reset logo</button><div id="mvp"><label>Position (or use ✥ Move and drag)</label><button data-a="nl" title="Nudge left">←</button><button data-a="nu" title="Nudge up">↑</button><button data-a="nd" title="Nudge down">↓</button><button data-a="nr" title="Nudge right">→</button><button data-a="mx" id="mxb" title="Drag only the exact item you press">Exact item: off</button><button data-a="mz">Reset position</button></div><div id="ft"><label>Text style</label><select id="ff" title="Font"></select><button data-a="fm" title="Smaller">A−</button><input id="fs" type="number" min="8" max="160" step="1" title="Font size (px)"><button data-a="fp" title="Larger">A+</button><select id="fw" title="Weight"><option value="400">Regular</option><option value="500">Medium</option><option value="600">Semi-bold</option><option value="700">Bold</option><option value="800">Extra-bold</option></select><input id="fc" type="color" value="#0a2342" title="Text colour"><button data-a="fi" id="fi" title="Italic"><i>I</i></button><button data-a="fx">Reset text</button></div>';
+var gear=d.createElement("button");gear.id="gear";gear.textContent="⚙ Admin";
+B.append(ab,ip,gear);
+var FF=[["Montserrat",'"Montserrat","Noto Sans Malayalam","Noto Naskh Arabic",sans-serif'],["Poppins",'"Poppins","Noto Sans Malayalam","Noto Naskh Arabic",sans-serif'],["Roboto",'"Roboto","Noto Sans Malayalam","Noto Naskh Arabic",sans-serif'],["Playfair Display (serif)",'"Playfair Display","Noto Serif Malayalam","Noto Naskh Arabic",serif'],["Lora (serif)",'"Lora","Noto Serif Malayalam","Noto Naskh Arabic",serif'],["Noto Sans Malayalam",'"Noto Sans Malayalam","Montserrat",sans-serif'],["Manjari (Malayalam)",'"Manjari","Montserrat",sans-serif'],["Noto Serif Malayalam",'"Noto Serif Malayalam","Lora",serif'],["Noto Naskh Arabic",'"Noto Naskh Arabic","Montserrat",serif'],["Amiri (Arabic)",'"Amiri","Noto Naskh Arabic",serif'],["System",'system-ui,sans-serif']];
+Q("#ff").innerHTML='<option value="">Default (site font)</option>'+FF.map(function(f,i){return'<option value="'+i+'">'+f[0]+'</option>'}).join("");
+function nm(s){return s.split(",")[0].replace(/["']/g,"").trim().toLowerCase()}
+function tt(){if(!tgt)return[];if(leaf(tgt))return[tgt];return[tgt].concat(A("*",tgt).filter(leaf))}
+function stl(p,v){tt().forEach(function(n){n.style[p]=v});dirty=1}
+function syn(){if(!tgt)return;var c=getComputedStyle(tgt),fam=nm(c.fontFamily),ix="";FF.forEach(function(f,i){if(nm(f[1])==fam)ix=i});Q("#ff").value=ix;Q("#fs").value=Math.round(parseFloat(c.fontSize));Q("#fw").value=Math.min(800,Math.max(400,Math.round(c.fontWeight/100)*100));Q("#fi").classList.toggle("on",c.fontStyle=="italic");var m=c.color.match(/\d+(\.\d+)?/g)||[0,0,0];Q("#fc").value="#"+[0,1,2].map(function(k){return("0"+Math.round(m[k]).toString(16)).slice(-2)}).join("")}
+function bump(dl){var v=Math.max(8,Math.min(160,(parseFloat(Q("#fs").value)||16)+dl));Q("#fs").value=v;stl("fontSize",v+"px")}
+Q("#ff").onchange=function(){var f=FF[this.value];stl("fontFamily",f?f[1]:"")};
+Q("#fs").oninput=function(){var v=parseFloat(this.value);if(v>=8&&v<=160)stl("fontSize",v+"px")};
+Q("#fw").onchange=function(){stl("fontWeight",this.value)};
+Q("#fc").oninput=function(){stl("color",this.value)};
+function ens(){if(Q("#memories"))return;var t=d.createElement("div");t.innerHTML=O.main;var m=t.querySelector("#memories");if(!m)return;var p=Q("#portals");if(p)p.after(m);else Q("main").appendChild(m)}
+function getT(n){var m=(n.style.translate||"").match(/-?[\d.]+/g)||[];return[+m[0]||0,+m[1]||0]}
+function setT(n,x,y){n.style.translate=(x||y)?Math.round(x)+"px "+Math.round(y)+"px":"";dirty=1}
+function nud(dx,dy){if(!sel)return;var o=getT(sel);setT(sel,o[0]+dx,o[1]+dy)}
+function tmv(){mv=!mv;B.classList.toggle("mv",mv);var b=Q("#mvb");b.textContent="✥ Move: "+(mv?"on":"off");b.classList.toggle("on",mv);prep(ed&&!mv);msg(mv?"Move on: drag any object. Turn off to edit text.":"Move off")}
+d.addEventListener("mousedown",function(e){if(ed&&mv&&!e.target.closest("#ab,#ip,#gear,#lg")&&e.target.closest("header,main,footer"))e.preventDefault()},true);
+d.addEventListener("pointerdown",function(e){if(!ed||!mv||e.button>0)return;var t=e.target;if(t.closest("#ab,#ip,#gear,#lg")||t.closest(".hero-bg")||!t.closest("header,main,footer"))return;e.preventDefault();
+if(mx){tgt=t;setSel(t)}else if(!(sel&&sel.contains(t))){tgt=t;setSel(t.closest(IT)||t)}
+var o=getT(sel);dr={n:sel,x:e.clientX,y:e.clientY,ox:o[0],oy:o[1]};try{t.setPointerCapture(e.pointerId)}catch(x){}},true);
+d.addEventListener("pointermove",function(e){if(dr)setT(dr.n,dr.ox+e.clientX-dr.x,dr.oy+e.clientY-dr.y)},true);
+d.addEventListener("pointerup",function(){dr=null},true);d.addEventListener("pointercancel",function(){dr=null},true);
+function msg(t){Q("#am").textContent=t}
+function leaf(n){return!/^(SCRIPT|VIDEO|SELECT|STYLE)$/.test(n.tagName)&&![].some.call(n.children,function(c){return c.tagName!="BR"})&&[].some.call(n.childNodes,function(c){return c.nodeType==3&&c.textContent.trim()})}
+function prep(on){A("#nav *,main *,footer *,.logo *").forEach(function(n){if(!leaf(n))return;if(on){n.setAttribute("contenteditable","plaintext-only");if(n.contentEditable!="plaintext-only")n.contentEditable="true"}else n.removeAttribute("contenteditable")})}
+function san(h){var t=new DOMParser().parseFromString("<body>"+h,"text/html").body;A("script,iframe,object,embed,link,meta,base,form,style",t).forEach(function(n){n.remove()});A("*",t).forEach(function(n){[].slice.call(n.attributes).forEach(function(a){if(/^on/i.test(a.name)||/^\s*javascript:/i.test(a.value))n.removeAttribute(a.name)})});return t.innerHTML}
+function ap(s){R.forEach(function(r){Q(r[1]).innerHTML=s&&s[r[0]]!=null?san(s[r[0]]):O[r[0]]});if(s&&!s.mem)ens();A(".rv").forEach(function(n){n.classList.add("in")});sel=null;ip.classList.remove("on");prep(ed&&!mv)}
+function clean(){var o={};R.forEach(function(r){var e=Q(r[1]).cloneNode(true);A("[contenteditable]",e).forEach(function(n){n.removeAttribute("contenteditable")});A(".sel,.open",e).forEach(function(n){n.classList.remove("sel","open")});o[r[0]]=e.innerHTML});return o}
+async function load(l){if(!sb)return null;try{var q=await sb.from("site_content").select("data").eq("lang",l).maybeSingle();return q.data?q.data.data:null}catch(e){return null}}
+async function save(){if(!sb){msg("Database unavailable");return}msg("Saving…");var o=clean();o.at=Date.now();o.mem=1;try{var q=await sb.from("site_content").upsert({lang:cur,data:o},{onConflict:"lang"});if(q.error)throw q.error;dirty=0;msg("Saved ✓ ("+cur.toUpperCase()+")")}catch(e){msg("Save failed: "+(e.code||"")+" "+(e.message||""))}}
+lang.onchange=async function(){if(dirty&&!confirm("Discard unsaved changes?")){lang.value=cur;return}cur=lang.value;dirty=0;oc.call(lang);var s=await load(cur);if(s)ap(s);else{ap(null);oc.call(lang)}};
+function tog(on){if(!on&&dirty&&!confirm("Exit without saving?"))return;ed=on;if(!on&&mv){mv=0;B.classList.remove("mv");Q("#mvb").textContent="✥ Move: off";Q("#mvb").classList.remove("on")}B.classList.toggle("ed",!!on);prep(on&&!mv);if(!on){dirty=0;ip.classList.remove("on");lang.onchange()}Q("#al").value=cur}
+function up(cb,acc){if(!as){msg("Sign in as admin to upload");return}var f=d.createElement("input");f.type="file";f.accept=acc;f.onchange=async function(){var x=f.files[0];if(!x)return;msg("Uploading…");try{var n=Date.now()+"-"+x.name.replace(/[^\w.-]/g,"_"),q=await sb.storage.from("site-media").upload(n,x);if(q.error)throw q.error;var r={url:sb.storage.from("site-media").getPublicUrl(n).data.publicUrl};cb(r.url,x.type);dirty=1;msg("Uploaded – press Save")}catch(e){msg("Upload failed")}};f.click()}
+function pic(el,u,ty){var lg=el.matches(LG);if(!lg&&/^video/.test(ty)){el.innerHTML='<video src="'+u+'" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit"></video>';el.style.fontSize="0"}else{A("video",el).forEach(function(v){v.remove()});el.style.background=(lg?'#fff ':'')+'url("'+u+'") center/'+(lg?'contain':'cover')+' no-repeat';el.style.fontSize="0";if(el.matches(".ai")){el.style.width=el.style.height="80px";el.style.borderRadius="20px"}if(el.matches(".logo i")){el.style.border="0";el.style.width=el.style.height="52px";el.style.borderRadius="12px"}}}
+function setSel(n){if(sel)sel.classList.remove("sel");sel=n;n.classList.add("sel");var a=tgt.closest("a");Q("#is").textContent="Selected: <"+n.tagName.toLowerCase()+"> "+(n.textContent||"").trim().slice(0,32);Q("#ih").style.display=a?"":"none";if(a)Q("#ih").value=a.getAttribute("href")||"";Q("[data-a=file]",ip).style.display=a?"":"none";Q("[data-a=img]",ip).style.display=tgt.closest(SL)?"":"none";var lg=tgt.closest(LG);Q("[data-a=img]",ip).textContent=lg?"Change logo":"Change image / video";Q("[data-a=rimg]",ip).style.display=lg?"":"none";syn();ip.classList.add("on")}
+d.addEventListener("click",function(e){if(!ed)return;var t=e.target;if(t.closest("#ab,#ip,#gear"))return;if(t.closest("a"))e.preventDefault();if(mv||!t.closest("header,main,footer"))return;tgt=t;setSel(t.closest(IT)||t)},true);
+ip.onclick=function(e){var k=e.target.dataset.a,p;if(!k||!sel)return;
+if(k=="up"){p=sel.parentElement;if(p&&p!=Q("main")&&p!=B){tgt=p;setSel(p)}}
+else if(k=="dup"){var c=sel.cloneNode(true);c.classList.remove("sel");c.removeAttribute("id");A("[id]",c).forEach(function(x){x.removeAttribute("id")});sel.after(c);dirty=1;prep(1);tgt=c;setSel(c)}
+else if(k=="del"){if(confirm("Delete this element?")){sel.remove();sel=null;ip.classList.remove("on");dirty=1}}
+else if(k=="l"){p=sel.previousElementSibling;if(p){p.before(sel);dirty=1}}
+else if(k=="r"){p=sel.nextElementSibling;if(p){p.after(sel);dirty=1}}
+else if(k=="file")up(function(u){tgt.closest("a").setAttribute("href",u);Q("#ih").value=u},"image/*,video/*,.pdf,.csv,.json,.txt,.md");
+else if(k=="img")up(function(u,t){pic(tgt.closest(SL),u,t)},tgt.closest(LG)?"image/*":"image/*,video/*")
+else if(k=="rimg"){var e2=tgt.closest(LG);if(e2){e2.removeAttribute("style");dirty=1;msg("Logo reset – press Save")}}
+else if(k=="nl")nud(-5,0)
+else if(k=="nr")nud(5,0)
+else if(k=="nu")nud(0,-5)
+else if(k=="nd")nud(0,5)
+else if(k=="mz"){sel.style.translate="";dirty=1}
+else if(k=="mx"){mx=!mx;e.target.textContent="Exact item: "+(mx?"on":"off");e.target.classList.toggle("on",mx)}
+else if(k=="fm")bump(-1)
+else if(k=="fp")bump(1)
+else if(k=="fi"){stl("fontStyle",getComputedStyle(tgt).fontStyle=="italic"?"normal":"italic");syn()}
+else if(k=="fx"){tt().forEach(function(n){["fontFamily","fontSize","fontWeight","fontStyle","color"].forEach(function(q){n.style[q]=""})});dirty=1;syn()}};
+Q("#ih").oninput=function(){var a=tgt&&tgt.closest("a");if(a){a.setAttribute("href",this.value);dirty=1}};
+ab.onclick=async function(e){var k=e.target.dataset.a;if(k=="save")save();else if(k=="exit")tog(0);else if(k=="mv")tmv();else if(k=="enq")enq();else if(k=="out"){dirty=0;await sb.auth.signOut();location.hash="";location.reload()}
+else if(k=="hero")up(function(u,t){pic(Q(".kb"),u,t)},"image/*,video/*");
+else if(k=="reset"&&confirm("Reset "+cur.toUpperCase()+" to the original design? Saved edits for this language will be deleted.")){try{await sb.from("site_content").delete().eq("lang",cur)}catch(x){}ap(null);oc.call(lang);dirty=0;msg("Reset")}};
+Q("#al").onchange=async function(){lang.value=this.value;await lang.onchange();this.value=cur};
+async function enq(){var q=await sb.from("enquiries").select("*").order("created_at",{ascending:false}).limit(500);if(q.error){msg(q.error.message);return}var o=d.createElement("div");o.id="lg";o.innerHTML='<div class="eqb"><h3>Enquiries ('+q.data.length+')</h3><div class="eql"></div><button class="pr" id="ex">Download CSV</button><button id="ec">Close</button></div>';var l=Q(".eql",o);q.data.forEach(function(x){var p=d.createElement("p");p.textContent=new Date(x.created_at).toLocaleString()+" · "+x.name+" · "+x.phone+(x.student?" · "+x.student:"")+(x.message?" — "+x.message:"");l.appendChild(p)});B.appendChild(o);Q("#ec",o).onclick=function(){o.remove()};Q("#ex",o).onclick=function(){var c="Date,Name,Phone,Student,Message\n"+q.data.map(function(x){return[x.created_at,x.name,x.phone,x.student,x.message].map(function(v){v=String(v==null?"":v);if(/^[=+\-@]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'}).join(",")}).join("\n");var a=d.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="enquiries.csv";a.click()}}
+d.addEventListener("click",async function(e){var b=e.target.closest(".enq button");if(!b||ed)return;var f=b.closest(".enq"),v=function(n){return f.querySelector("[name="+n+"]").value.trim()},m=Q(".em",f);if(v("h"))return;if(!v("n")||!v("p")){m.textContent="Please enter your name and phone number.";return}b.disabled=true;var x=await sb.from("enquiries").insert({name:v("n"),phone:v("p"),student:v("s"),message:v("m")});b.disabled=false;if(x.error){m.textContent="Could not send. Please call the office.";return}A("input,textarea",f).forEach(function(i){i.value=""});m.textContent="Thank you! The office will contact you soon."});
+gear.onclick=function(){tog(1)};
+d.addEventListener("input",function(){if(ed)dirty=1});
+d.addEventListener("keydown",function(e){if(ed&&(e.ctrlKey||e.metaKey)&&e.key=="s"){e.preventDefault();save()}});
+addEventListener("beforeunload",function(e){if(dirty){e.preventDefault();e.returnValue=""}});
+(async function(){try{sb=supabase.createClient("https://endgfdkjpqlsrlreeqps.supabase.co","sb_publishable_TCTlL2peANqfINgtnST-fw_5aRnSBWh");var s=await load("en");if(s)ap(s);
+async function chk(){var g=await sb.auth.getSession();if(!g.data.session)return 0;var a=await sb.rpc("is_admin");return a.data===true}
+async function on(){as=1;gear.style.display="block"}
+function login(){return new Promise(function(ok){var o=d.createElement("div");o.id="lg";o.innerHTML='<form><h3>Admin login</h3><input id="le" type="email" placeholder="Email" autocomplete="username"><input id="lp" type="password" placeholder="Password" autocomplete="current-password"><button class="pr">Sign in</button><button type="button" id="lc">Cancel</button><small id="lm"></small></form>';B.appendChild(o);Q("#le").focus();Q("#lc").onclick=function(){o.remove();ok()};Q("form",o).onsubmit=async function(e){e.preventDefault();var x=await sb.auth.signInWithPassword({email:Q("#le").value,password:Q("#lp").value});if(x.error){Q("#lm").textContent=x.error.message;return}if(await chk()){o.remove();await on();ok()}else Q("#lm").textContent="This account is not an admin."}})}
+if(await chk())await on();
+if(location.hash=="#admin"){if(!as)await login();if(as)tog(1)}}catch(e){}})();
+})();
+</script>
+<script>
+/* Hero video: put a video URL (mp4/webm) in HERO_VIDEO to play it by default.
+   The admin "Hero background" upload also works and overrides this. */
+(function(){var HERO_VIDEO="";
+function play(){var k=document.querySelector(".kb video");if(k&&!k.getAttribute("src")&&HERO_VIDEO)k.src=HERO_VIDEO;
+document.querySelectorAll(".hero video").forEach(function(v){if(!v.getAttribute("src"))return;
+v.muted=true;v.loop=true;v.setAttribute("playsinline","");
+var p=v.play();if(p&&p.catch)p.catch(function(){document.addEventListener("click",function f(){v.play();document.removeEventListener("click",f)})})})}
+if(document.readyState!="loading")play();else document.addEventListener("DOMContentLoaded",play);
+addEventListener("load",function(){setTimeout(play,600)});
+new MutationObserver(play).observe(document.querySelector(".hero-bg"),{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
+})();
+</script>
+</body>
+</html>
